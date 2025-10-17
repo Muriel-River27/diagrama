@@ -1,3 +1,6 @@
+---
+
+```mermaid
 graph TB
 
 %% ========================
@@ -92,3 +95,4 @@ subgraph "3. Componentes Reutilizables"
     Render --> Paint;
     Paint --> E;
 end
+
