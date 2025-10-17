@@ -29,11 +29,11 @@ graph TD
         G2 -- Válido --> G3("updateSlopeInfoLabel(A, B, C)")
         G2 -- Inválido --> Err
         G3 --> DDA2("Llamar DDA(A, B)")
-        DDA2 --> G4(populateTable(table_ab))
+        DDA2 --> G4("populateTable(table_ab)")
         G4 --> DDA3("Llamar DDA(B, C)")
-        DDA3 --> G5(populateTable(table_bc))
+        DDA3 --> G5("populateTable(table_bc)")
         G5 --> DDA4("Llamar DDA(C, A)")
-        DDA4 --> G6(populateTable(table_ca))
+        DDA4 --> G6("populateTable(table_ca)")
         G6 --> G7(Acumular Puntos AB, BC, CA)
         G7 --> G8("canvas->setTriangleOutline(Puntos)")
         G8 --> Render
