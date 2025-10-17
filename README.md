@@ -1,5 +1,18 @@
+# 🧩 Diagrama de Flujo — Programa DDA con Relleno de Triángulo
+
+Este diagrama muestra el funcionamiento del programa que grafica un **triángulo mediante el método DDA (Digital Differential Analyzer)** y posteriormente **rellena el interior del triángulo** en el lienzo.
+
+El flujo se divide en cuatro fases principales:
+1. **Validación de Entradas**
+2. **Dibujo de Lados con DDA**
+3. **Relleno del Triángulo**
+4. **Actualización Visual**
+
+---
+
+```mermaid
 graph TD
-    A([Inicio]) --> B[Usuario hace clic en "Dibujar Triangulo"];
+    A([Inicio]) --> B[Usuario hace clic en Dibujar Triangulo];
     B --> C[Se ejecuta el slot on_draw_triangle];
     C --> D[Llamar a funcion auxiliar readTriangleVertices];
     
@@ -23,7 +36,7 @@ graph TD
 
     subgraph Relleno_del_Triangulo
         O --> P[Calcular limites horizontales del triangulo];
-        P --> Q[Ejecutar algoritmo de relleno por filas (scanline)];
+        P --> Q[Ejecutar algoritmo de relleno por filas scanline];
         Q --> R[Almacenar puntos de relleno en canvas];
     end
 
@@ -34,3 +47,4 @@ graph TD
     end
 
     U --> V([Fin])
+
