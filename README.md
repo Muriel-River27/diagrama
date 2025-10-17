@@ -1,4 +1,11 @@
-# Diagrama de flujo — Ciclo de vida de la aplicación Qt
+#  Diagrama de Flujo 
+
+Este diagrama muestra las tres fases principales del ciclo de vida de una aplicación Qt:
+1. **Fase de Arranque (main.cpp)**  
+2. **Fase de Construcción (mainwindow.cpp)**  
+3. **Fase de Ejecución (main.cpp)**  
+
+---
 
 ```mermaid
 graph TD
