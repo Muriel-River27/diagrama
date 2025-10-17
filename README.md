@@ -1,72 +1,72 @@
 ```mermaid
 graph TD
-    subgraph "1. Initialization"
+    subgraph "1. Inicialización"
         direction LR
-        A(Program Start) --> B("MainWindow::MainWindow()")
-        B --> C("setupUI(): Create widgets & connect signals")
-        C --> D("loadStyles(): Load stylesheets")
-        D --> E{Wait for User Interaction}
+        A(Inicio del Programa) --> B("MainWindow::MainWindow()")
+        B --> C("setupUI(): Crear widgets y conectar señales")
+        C --> D("loadStyles(): Cargar estilos CSS")
+        D --> E{Esperar Interacción del Usuario}
     end
 
-    subgraph "2. User Interaction (Slots)"
+    subgraph "2. Interacción (Slots)"
         direction TB
         
-        %% Flow 1: Calculate Line
-        E --> F_Click("Click 'Calculate Line'")
+        %% Flujo 1: Calcular Línea
+        E --> F_Click("Click 'Calcular Línea'")
         F_Click --> F1(on_calculate_line)
-        F1 --> F2("Read/Validate P1, P2 from QLineEdits")
-        F2 -- Valid --> F3("Calculate & Display Slope")
-        F2 -- Invalid --> Err(Show Error)
-        F3 --> DDA1("Call dda_algorithm(P1, P2)")
-        DDA1 --> F4("populateTable(table_ab, Steps)")
-        F4 --> F5("canvas->setLinePoints(Points)")
-        F5 --> Render(Trigger Render)
+        F1 --> F2("Leer/Validar P1, P2 de QLineEdits")
+        F2 -- Válido --> F3("Calcular y mostrar pendiente")
+        F2 -- Inválido --> Err(Mostrar Error)
+        F3 --> DDA1("Llamar dda_algorithm(P1, P2)")
+        DDA1 --> F4("populateTable(table_ab, Pasos)")
+        F4 --> F5("canvas->setLinePoints(Puntos)")
+        F5 --> Render(Disparar Renderizado)
 
-        %% Flow 2: Draw Triangle Outline
-        E --> G_Click("Click 'Draw Outline'")
+        %% Flujo 2: Dibujar Contorno
+        E --> G_Click("Click 'Dibujar Contorno'")
         G_Click --> G1(on_draw_triangle)
-        G1 --> G2("Read/Validate Vertices A, B, C")
-        G2 -- Valid --> G3("updateSlopeInfoLabel(A, B, C)")
-        G2 -- Invalid --> Err
-        G3 --> DDA2("Call DDA(A, B)")
+        G1 --> G2("Leer/Validar Vértices A, B, C")
+        G2 -- Válido --> G3("updateSlopeInfoLabel(A, B, C)")
+        G2 -- Inválido --> Err
+        G3 --> DDA2("Llamar DDA(A, B)")
         DDA2 --> G4("populateTable(table_ab)")
-        G4 --> DDA3("Call DDA(B, C)")
+        G4 --> DDA3("Llamar DDA(B, C)")
         DDA3 --> G5("populateTable(table_bc)")
-        G5 --> DDA4("Call DDA(C, A)")
+        G5 --> DDA4("Llamar DDA(C, A)")
         DDA4 --> G6("populateTable(table_ca)")
-        G6 --> G7("Accumulate Points AB, BC, CA")
-        G7 --> G8("canvas->setTriangleOutline(Points)")
+        G6 --> G7("Acumular Puntos AB, BC, CA")
+        G7 --> G8("canvas->setTriangleOutline(Puntos)")
         G8 --> Render
 
-        %% Flow 3: Fill Triangle
-        E --> H_Click("Click 'Fill'")
+        %% Flujo 3: Rellenar Triángulo
+        E --> H_Click("Click 'Rellenar'")
         H_Click --> H1(on_fill_triangle)
-        H1 --> H2("Read/Validate Vertices A, B, C")
-        H2 -- Valid --> H3("Call on_draw_triangle()")
-        H2 -- Invalid --> Err
-        H3 --> H4("Call DDA(A, B) -> EdgePointsAB")
-        H4 --> H5{Loop: For each 'p' in EdgePointsAB}
-        H5 -- Iterate --> H6("Call DDA(C, p)")
-        H6 --> H7("Accumulate Fill Points")
+        H1 --> H2("Leer/Validar Vértices A, B, C")
+        H2 -- Válido --> H3("Llamar on_draw_triangle()")
+        H2 -- Inválido --> Err
+        H3 --> H4("Llamar DDA(A, B) -> PuntosLadoAB")
+        H4 --> H5{Bucle: Para cada 'p' en PuntosLadoAB}
+        H5 -- Iterar --> H6("Llamar DDA(C, p)")
+        H6 --> H7("Acumular Puntos de Relleno")
         H7 --> H5
-        H5 -- Loop End --> H8("canvas->setTriangleFill(FillPoints)")
+        H5 -- Fin Bucle --> H8("canvas->setTriangleFill(PuntosRelleno)")
         H8 --> Render
 
-        %% Flow 4: Clear All
-        E --> I_Click("Click 'Clear All'")
+        %% Flujo 4: Limpiar
+        E --> I_Click("Click 'Limpiar Todo'")
         I_Click --> I1(on_clear)
-        I1 --> I2("Clear QLineEdits & QTableWidgets")
+        I1 --> I2("Limpiar QLineEdits y QTableWidgets")
         I2 --> I3("canvas->clear()")
         I3 --> Render
 
-        %% End of flows
+        %% Fin de flujos
         Err --> E
     end
 
-    subgraph "3. Core Components"
+    subgraph "3. Componentes Centrales"
         direction TB
         
-        %% DDA Algorithm (Logic)
+        %% Algoritmo DDA (Lógica)
         DDA(dda_algorithm)
         style DDA fill:#D5F5E3,stroke:#2ECC71,stroke-width:2px
         DDA1 --> DDA
@@ -76,7 +76,7 @@ graph TD
         H4 --> DDA
         H6 --> DDA
 
-        %% Rendering (View)
+        %% Renderizado (Vista)
         Paint("DrawingCanvas::paintEvent")
         style Paint fill:#D6EAF8,stroke:#3498DB,stroke-width:2px
         Render --> Paint
