@@ -1,5 +1,8 @@
+# 🧩 Diagrama de Flujo — Dibujo del Triángulo
+
+```mermaid
 graph TD
-    A[Usuario hace clic en "Dibujar Contorno"] --> B[Se ejecuta el slot on_draw_triangle];
+    A[Usuario hace clic en Dibujar Contorno] --> B[Se ejecuta el slot on_draw_triangle];
     B --> C[Llamar a la funcion auxiliar readTriangleVertices];
     
     subgraph Validacion_de_Entradas_readTriangleVertices
@@ -27,3 +30,4 @@ graph TD
         N --> O[Qt llama automaticamente a la funcion paintEvent del lienzo];
         O --> P[El lienzo se redibuja mostrando el triangulo];
     end
+```
