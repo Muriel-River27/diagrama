@@ -1,5 +1,4 @@
-```mermaid
-graph TD
+graph LR
     subgraph "Usuario"
         A["Clic en 'Dibujar Círculo'"] --> B
         L["Clic en 'Limpiar'"] --> M
