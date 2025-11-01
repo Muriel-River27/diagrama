@@ -1,21 +1,37 @@
-```mermaid
 graph TD
-    A[Inicio de la Aplicación] --> B{Esperando acción del usuario};
-    
-    B -- Clic 'Dibujar Línea' --> C["Leer Puntos (X1,Y1,X2,Y2)"];
-    C --> D["Calcular Puntos de la Línea (Algoritmo DDA)"];
-    D --> E["Mostrar Puntos en Tabla 'Lado AB'"];
-    E --> F["Dibujar Línea en el Gráfico"];
-    F --> B;
-    
-    B -- Clic 'Dibujar Triángulo' --> I["Leer Vértices (A,B,C)"];
-    I --> J["Calcular Lados AB, BC, CA (Algoritmo DDA)"];
-    J --> K["Mostrar Puntos en Tablas 'Lado AB', 'Lado BC', 'Lado CA'"];
-    K --> L["Dibujar Lados del Triángulo en el Gráfico"];
-    L --> B;
-    
-    B -- Clic 'Rellenar Triángulo' --> N["Ejecutar Algoritmo de Relleno sobre el último triángulo"];
-    N --> B;
-    
-    B -- Clic 'Limpiar Todo' --> H["Borrar Gráfico y limpiar todas las Tablas"];
-    H --> B;
+    subgraph "Usuario"
+        A["Clic en 'Dibujar Círculo'"] --> B
+        L["Clic en 'Limpiar'"] --> M
+    end
+
+    subgraph "MainWindow (Controlador)"
+        B(on_dibujarButton_clicked) --> C{"Lee Xc, Yc, r de SpinBox"}
+        C --> D["Llama a canvasWidget.dibujarCirculo()"]
+        
+        M(on_limpiarButton_clicked) --> N["Llama a canvasWidget.limpiar()"]
+        N --> O["Llama a canvasWidget.resetView()"]
+        O --> P["Limpia Modelos de Tablas"]
+        P --> Q["Resetea SpinBox a 0"]
+
+        I("slot: actualizarTablaPaso") --> J["Actualiza modeloPasos"]
+        K("slot: actualizarTablaOctantes") --> K2["Actualiza modeloOctantes"]
+    end
+
+    subgraph "CanvasWidget (Motor de Dibujo)"
+        D --> E(dibujarCirculo)
+        E --> F(calcularPuntosCirculo)
+        F -- "Bucle" --> G(emit nuevoPasoAlgoritmo)
+        F -- "Bucle" --> H(emit nuevoPuntoOctantes)
+        E --> R["Auto-Zoom y Paneo"]
+        R --> S(update)
+        
+        N --> T(limpiar)
+        T --> S
+        
+        S --> U(paintEvent)
+        U --> V["Dibuja Plano Cartesiano Detallado"]
+        U --> W["Dibuja Círculo/Relleno"]
+    end
+
+    G -.->|"Señal"| I
+    H -.->|"Señal"| K
