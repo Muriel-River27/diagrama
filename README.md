@@ -1,3 +1,4 @@
+```mermaid
 graph LR
     subgraph "Usuario"
         A["Clic en 'Dibujar Círculo'"] --> B
