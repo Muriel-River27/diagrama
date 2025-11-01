@@ -1,38 +1,33 @@
 ```mermaid
-graph LR
-    subgraph "Usuario"
-        A["Clic en 'Dibujar Círculo'"] --> B
-        L["Clic en 'Limpiar'"] --> M
-    end
+graph TD
+    A(Inicio de la Aplicación) --> B[Inicializar UI: MainWindow y CanvasWidget]
+    B --> C{Esperar Interacción del Usuario}
 
-    subgraph "MainWindow (Controlador)"
-        B(on_dibujarButton_clicked) --> C{"Lee Xc, Yc, r de SpinBox"}
-        C --> D["Llama a canvasWidget.dibujarCirculo()"]
-        
-        M(on_limpiarButton_clicked) --> N["Llama a canvasWidget.limpiar()"]
-        N --> O["Llama a canvasWidget.resetView()"]
-        O --> P["Limpia Modelos de Tablas"]
-        P --> Q["Resetea SpinBox a 0"]
+    C -- Clic en 'Dibujar Círculo' --> D(on_dibujarButton_clicked)
+    D --> E{Leer Xc, Yc, r, Relleno}
+    E --> F{¿Radio > 0?}
+    F -- No --> C
+    F -- Sí --> G[Limpiar lienzo y tablas]
+    G --> H[Calcular Puntos (Algoritmo)]
+    H --> I[Mostrar Pasos en Tabla (N, Pk...)]
+    I --> J[Mostrar 8 Puntos en Tabla]
+    J --> K[Aplicar Auto-Zoom y Centrado]
+    K --> L[Llamar a update() para redibujar]
+    L --> M(paintEvent)
+    M --> N{¿Requiere Rellenar?}
+    N -- Sí --> O[Dibujar Relleno]
+    N -- No --> P[Dibujar Borde]
+    O --> C
+    P --> C
 
-        I("slot: actualizarTablaPaso") --> J["Actualiza modeloPasos"]
-        K("slot: actualizarTablaOctantes") --> K2["Actualiza modeloOctantes"]
-    end
+    C -- Clic en 'Limpiar' --> Q(on_limpiarButton_clicked)
+    Q --> R[Limpiar lienzo (limpiar() y resetView())]
+    R --> S[Limpiar modelos de Tablas]
+    S --> T[Resetear SpinBox y CheckBox]
+    T --> U[Llamar a update() para redibujar]
+    U --> V(paintEvent)
+    V --> W[Dibuja Plano Cartesiano Vacío]
+    W --> C
+    
+    C -- Clic en 'Cerrar' (X) --> Z(Fin)
 
-    subgraph "CanvasWidget (Motor de Dibujo)"
-        D --> E(dibujarCirculo)
-        E --> F(calcularPuntosCirculo)
-        F -- "Bucle" --> G(emit nuevoPasoAlgoritmo)
-        F -- "Bucle" --> H(emit nuevoPuntoOctantes)
-        E --> R["Auto-Zoom y Paneo"]
-        R --> S(update)
-        
-        N --> T(limpiar)
-        T --> S
-        
-        S --> U(paintEvent)
-        U --> V["Dibuja Plano Cartesiano Detallado"]
-        U --> W["Dibuja Círculo/Relleno"]
-    end
-
-    G -.->|"Señal"| I
-    H -.->|"Señal"| K
