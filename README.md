@@ -1,3 +1,4 @@
+```mermaid
 objectDiagram
     %% Instancia de Usuario (Clase: usuarios)
     object "usuario: SaraiMuriel" {
